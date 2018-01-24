@@ -148,3 +148,64 @@ const actors = [{
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
+
+deliveries.forEach(function(delivery){
+
+	truckers.forEach(function(trucker){
+
+		actors.forEach(function(actor){
+
+
+			var decreasedPriceVol = 1;
+			var deductible = 0;
+
+			if (trucker.id ==delivery.truckerId)
+			{
+
+				if ((delivery.volume >=5) && (delivery.volume <10))
+				{
+					decreasedPriceVol = 0.9;
+				}
+				if ((delivery.volume >=10) && (delivery.volume <25))
+				{
+					decreasedPriceVol = 0.7;
+				}
+				if (delivery.volume >=25)
+				{
+					decreasedPriceVol = 0.5;
+				}
+
+				if (delivery.options.deductibleReduction == true)
+				{
+					deductible = delivery.volume;
+				}
+
+
+				delivery.price = delivery.distance*(trucker.pricePerKm*decreasedPriceVol) + delivery.volume * trucker.pricePerVolume + deductible;
+				
+
+				var commission = delivery.price*0.3;
+
+
+				delivery.commission.insurance = commission/2;
+				delivery.commission.treasury = Math.ceil(delivery.distance/500);
+				delivery.commission.convargo = commission - delivery.commission.insurance - delivery.commission.treasury;
+
+				
+			}
+
+			if (actor.deliveryId == delivery.id)
+			{
+				actor.payment[0].amount = delivery.price;
+				actor.payment[1].amount	= 0.7*delivery.price;
+				actor.payment[2].amount	= delivery.commission.treasury;
+				actor.payment[3].amount	= delivery.commission.insurance;
+				actor.payment[4].amount	= delivery.commission.convargo;	
+
+
+			}
+
+		});
+	});
+
+});
