@@ -193,8 +193,13 @@ deliveries.forEach(function(delivery){
 
 				
 			}
+		});
+	});
+});
 
-			if (actor.deliveryId == delivery.id)
+actors.forEach(function(actor){
+	deliveries.forEach(function(delivery){
+		if (actor.deliveryId == delivery.id)
 			{
 				actor.payment[0].amount = delivery.price;
 				actor.payment[1].amount	= 0.7*delivery.price;
@@ -204,8 +209,13 @@ deliveries.forEach(function(delivery){
 
 
 			}
-
-		});
+			console.log(delivery.id + ":");
+			console.log("delivery price : " + delivery.price);
+			console.log ("shipper : " + actor.payment[0].amount);
+			console.log ("trucker : " +actor.payment[1].amount);
+			console.log ("treasury : " +actor.payment[2].amount);
+			console.log ("insurance : " +actor.payment[3].amount);
+			console.log ("convargo : " +actor.payment[4].amount);
 	});
-
 });
+
